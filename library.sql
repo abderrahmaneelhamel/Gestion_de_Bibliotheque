@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 06 sep. 2023 à 11:57
+-- Généré le : mer. 06 sep. 2023 à 17:21
 -- Version du serveur : 10.4.25-MariaDB
 -- Version de PHP : 8.1.10
 
@@ -40,20 +40,9 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`id`, `title`, `author`, `ISBN`, `quantity`) VALUES
-(1, 'mobydick', 'me', '#3332', 3),
-(2, '1984', 'goerge', '#3213', 3);
-
---
--- Déclencheurs `books`
---
-DELIMITER $$
-CREATE TRIGGER `available_tr` BEFORE INSERT ON `books` FOR EACH ROW BEGIN
-  IF NEW.status IS NULL THEN
-    SET NEW.status = 'available';
-  END IF;
-END
-$$
-DELIMITER ;
+(1, 'mobydick', 'me', '#3332', 0),
+(2, '1984', 'goerge', '#3213', 3),
+(5, 'haytam life', 'haytam', '#4111', 0);
 
 -- --------------------------------------------------------
 
@@ -69,6 +58,13 @@ CREATE TABLE `borrow` (
   `return_date` date NOT NULL,
   `status` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `borrow`
+--
+
+INSERT INTO `borrow` (`id`, `book_id`, `reader_id`, `borrow_date`, `return_date`, `status`) VALUES
+(6, 1, 4, '2023-09-04', '2023-09-05', 'lost');
 
 --
 -- Déclencheurs `borrow`
@@ -99,7 +95,9 @@ CREATE TABLE `returns` (
 
 INSERT INTO `returns` (`id`, `book_id`, `reader_id`, `return_date`) VALUES
 (1, 1, 4, '2023-09-05'),
-(2, 1, 4, '2023-09-05');
+(2, 1, 4, '2023-09-05'),
+(3, 1, 4, '2023-09-06'),
+(4, 5, 4, '2023-09-06');
 
 --
 -- Déclencheurs `returns`
@@ -175,19 +173,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `borrow`
 --
 ALTER TABLE `borrow`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `returns`
 --
 ALTER TABLE `returns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `users`
