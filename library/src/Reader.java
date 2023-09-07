@@ -14,7 +14,7 @@ public class Reader extends User{
     }
     public void borrowBook() {
         try {
-            Connection connection = Main.connection();
+            Connection connection = dataBase.connection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM books Where quantity  > 0");
             while (resultSet.next()) {
@@ -23,10 +23,10 @@ public class Reader extends User{
             int bookId;
             if(!resultSet.next()){
                 System.out.println("Enter the book id");
-                bookId = Main.tryParse(new Scanner(System.in).nextLine());
+                bookId = tools.tryParse(new Scanner(System.in).nextLine());
                 if(checkIfBookIsAvailable(bookId)) {
                     System.out.println("Enter in how many days you're going to return it : ");
-                    int duration = new Scanner(System.in).nextInt();
+                    int duration = tools.tryParse(new Scanner(System.in).nextLine());
                     Date date = new Date();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String borrow_date = formatter.format(date);
@@ -51,7 +51,7 @@ public class Reader extends User{
             }else{
                 System.out.println("No book is available\nexiting...");
             }
-            Main.endConnection(connection);
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class Reader extends User{
 
     public void returnBook() {
         try {
-            Connection connection = Main.connection();
+            Connection connection = dataBase.connection();
             Statement statement = connection.createStatement();
             System.out.println("Enter the book ISBN");
             String ISBN = new Scanner(System.in).nextLine();
@@ -96,7 +96,7 @@ public class Reader extends User{
             }else {
                 System.out.println("please enter valide data");
             }
-            Main.endConnection(connection);
+            connection.close();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -104,11 +104,11 @@ public class Reader extends User{
     }
     public void searchByTitle(){
         try {
-            Connection connection = Main.connection();
+            Connection connection = dataBase.connection();
             Statement statement = connection.createStatement();
             System.out.println("Enter the title of the book");
             String title = new Scanner(System.in).nextLine();
-            String query = "SELECT * FROM books WHERE title LIKE '%" + title + "%'";
+            String query = "SELECT * FROM books WHERE title LIKE '%" + title + "%' AND quantity > 0";
             ResultSet resultSet = statement.executeQuery(query);
             int check = 0;
             while (resultSet.next()) {
@@ -118,9 +118,9 @@ public class Reader extends User{
             if (check == 0) {
                 System.out.println("No book found");
             }
-            Main.endConnection(connection);
+            connection.close();
             System.out.println("1- borrow a book? \n 2- exit");
-            int choice = Main.tryParse(new Scanner(System.in).nextLine());
+            int choice = tools.tryParse(new Scanner(System.in).nextLine());
             if (choice == 1) {
                 borrowBook();
             }
@@ -137,7 +137,7 @@ public class Reader extends User{
     }
     public void searchByAuthor(){
         try {
-            Connection connection = Main.connection();
+            Connection connection = dataBase.connection();
             Statement statement = connection.createStatement();
             System.out.println("Enter the author name");
             String author = new Scanner(System.in).nextLine();
@@ -146,7 +146,18 @@ public class Reader extends User{
             while (resultSet.next()) {
                 System.out.println("title : "+resultSet.getString("title") + " | author : " + resultSet.getString("author") + " | ISBN : " + resultSet.getString("ISBN") + " | quantity : " + resultSet.getString("quantity"));
             }
-            Main.endConnection(connection);
+            connection.close();
+            System.out.println("1- borrow a book? \n 2- exit");
+            int choice = tools.tryParse(new Scanner(System.in).nextLine());
+            if (choice == 1) {
+                borrowBook();
+            }
+            else if (choice == 2) {
+                System.out.println("thank you for using our service");
+            }
+            else {
+                System.out.println("please enter a valid choice");
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -157,7 +168,7 @@ public class Reader extends User{
         boolean isAvailable = false;
 
         try {
-            Connection connection = Main.connection();
+            Connection connection = dataBase.connection();
             String sql = "SELECT quantity from books where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, bookId);

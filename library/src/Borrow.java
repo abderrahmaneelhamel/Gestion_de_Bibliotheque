@@ -1,4 +1,3 @@
-import java.util.Date;
 public class Borrow {
     private int id;
     private int book_id;
