@@ -150,8 +150,13 @@ public class Reader extends User {
             String author = new Scanner(System.in).nextLine();
             String query = "SELECT * FROM books WHERE author LIKE '%" + author + "%'";
             ResultSet resultSet = statement.executeQuery(query);
+            int check = 0;
             while (resultSet.next()) {
+                check++;
                 System.out.println("title : " + resultSet.getString("title") + " | author : " + resultSet.getString("author") + " | ISBN : " + resultSet.getString("ISBN") + " | quantity : " + resultSet.getString("quantity"));
+            }
+            if (check == 0) {
+                System.out.println("No book found");
             }
             connection.close();
             System.out.println("1- borrow a book? \n 2- exit");
