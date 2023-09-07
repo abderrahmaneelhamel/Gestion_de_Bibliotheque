@@ -4,28 +4,34 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.Date;
 
-public class Reader extends User{
-    public Reader(User user){
+public class Reader extends User {
+    // Constructor for Reader
+    public Reader(User user) {
         this.setName(user.getName());
         this.setEmail(user.getEmail());
         this.setPassword(user.getPassword());
         this.setId(user.getId());
         this.setRole(user.getRole());
     }
+
+    // Method to borrow a book
     public void borrowBook() {
         try {
             Connection connection = dataBase.connection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM books Where quantity  > 0");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM books WHERE quantity  > 0");
+
             while (resultSet.next()) {
                 System.out.println(resultSet.getInt("id") + "- " + resultSet.getString("title"));
             }
             int bookId;
-            if(!resultSet.next()){
+
+            if (!resultSet.next()) {
                 System.out.println("Enter the book id");
                 bookId = tools.tryParse(new Scanner(System.in).nextLine());
-                if(checkIfBookIsAvailable(bookId)) {
-                    System.out.println("Enter in how many days you're going to return it : ");
+
+                if (checkIfBookIsAvailable(bookId)) {
+                    System.out.println("Enter the number of days you plan to borrow the book for:");
                     int duration = tools.tryParse(new Scanner(System.in).nextLine());
                     Date date = new Date();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -43,12 +49,12 @@ public class Reader extends User{
                         ISBN = resultSet1.getString("ISBN");
                     }
                     System.out.printf("Book borrowed successfully\nyou should return it by the : %s", returnDate);
-                    System.out.printf("\nthe book ISBN is : %s , you should provide it when you want to return the book", ISBN);
+                    System.out.printf("\nThe book ISBN is : %s , you should provide it when you want to return the book", ISBN);
                     statement.close();
-                }else {
+                } else {
                     System.out.println("No book is available with this id\nexiting...");
                 }
-            }else{
+            } else {
                 System.out.println("No book is available\nexiting...");
             }
             connection.close();
@@ -57,6 +63,7 @@ public class Reader extends User{
         }
     }
 
+    // Method to return a book
     public void returnBook() {
         try {
             Connection connection = dataBase.connection();
@@ -65,12 +72,12 @@ public class Reader extends User{
             String ISBN = new Scanner(System.in).nextLine();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM books WHERE ISBN = '" + ISBN + "'");
             int id = 0;
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 id = resultSet.getInt("id");
             }
             ResultSet resultSet1 = statement.executeQuery("SELECT br.id, b.ISBN, b.title , br.return_date, br.reader_id , br.borrow_date  FROM borrow AS br , books AS b WHERE br.book_id = b.id AND b.id = " + id);
             HashMap<String, String> borrowedBook = new HashMap<>();
-            while(resultSet1.next()) {
+            while (resultSet1.next()) {
                 borrowedBook.put("ISBN", resultSet1.getString("ISBN"));
                 borrowedBook.put("id", resultSet1.getString("id"));
                 borrowedBook.put("title", resultSet1.getString("title"));
@@ -78,7 +85,7 @@ public class Reader extends User{
                 borrowedBook.put("reader_id", resultSet1.getString("reader_id"));
                 borrowedBook.put("borrow_date", resultSet1.getString("borrow_date"));
             }
-            if(!borrowedBook.isEmpty()) {
+            if (!borrowedBook.isEmpty()) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 LocalDate today = LocalDate.now();
                 Date date = new Date();
@@ -88,21 +95,22 @@ public class Reader extends User{
                     statement.executeUpdate("DELETE FROM borrow WHERE id = " + borrowedBook.get("id"));
                     statement.executeUpdate("INSERT INTO returns (book_id,reader_id,return_date) VALUES (" + id + "," + borrowedBook.get("reader_id") + ",'" + theDate + "')");
                     System.out.println("You are late to return the book");
-                }else {
+                } else {
                     statement.executeUpdate("DELETE FROM borrow WHERE id = " + borrowedBook.get("id"));
                     statement.executeUpdate("INSERT INTO returns (book_id,reader_id,return_date) VALUES (" + id + "," + borrowedBook.get("reader_id") + ",'" + theDate + "')");
                     System.out.println("Thank you for returning the book");
                 }
-            }else {
-                System.out.println("please enter valide data");
+            } else {
+                System.out.println("No records found for the provided ISBN.");
             }
             connection.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void searchByTitle(){
+
+    // Method to search for a book by title
+    public void searchByTitle() {
         try {
             Connection connection = dataBase.connection();
             Statement statement = connection.createStatement();
@@ -113,7 +121,7 @@ public class Reader extends User{
             int check = 0;
             while (resultSet.next()) {
                 check++;
-                System.out.println("title : "+resultSet.getString("title") + " | author : " + resultSet.getString("author") + " | ISBN : " + resultSet.getString("ISBN") + " | quantity : " + resultSet.getString("quantity"));
+                System.out.println("title : " + resultSet.getString("title") + " | author : " + resultSet.getString("author") + " | ISBN : " + resultSet.getString("ISBN") + " | quantity : " + resultSet.getString("quantity"));
             }
             if (check == 0) {
                 System.out.println("No book found");
@@ -123,19 +131,18 @@ public class Reader extends User{
             int choice = tools.tryParse(new Scanner(System.in).nextLine());
             if (choice == 1) {
                 borrowBook();
+            } else if (choice == 2) {
+                System.out.println("Thank you for using our service");
+            } else {
+                System.out.println("Please enter a valid choice");
             }
-            else if (choice == 2) {
-                System.out.println("thank you for using our service");
-            }
-            else {
-                System.out.println("please enter a valid choice");
-            }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void searchByAuthor(){
+
+    // Method to search for a book by author
+    public void searchByAuthor() {
         try {
             Connection connection = dataBase.connection();
             Statement statement = connection.createStatement();
@@ -144,26 +151,24 @@ public class Reader extends User{
             String query = "SELECT * FROM books WHERE author LIKE '%" + author + "%'";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                System.out.println("title : "+resultSet.getString("title") + " | author : " + resultSet.getString("author") + " | ISBN : " + resultSet.getString("ISBN") + " | quantity : " + resultSet.getString("quantity"));
+                System.out.println("title : " + resultSet.getString("title") + " | author : " + resultSet.getString("author") + " | ISBN : " + resultSet.getString("ISBN") + " | quantity : " + resultSet.getString("quantity"));
             }
             connection.close();
             System.out.println("1- borrow a book? \n 2- exit");
             int choice = tools.tryParse(new Scanner(System.in).nextLine());
             if (choice == 1) {
                 borrowBook();
+            } else if (choice == 2) {
+                System.out.println("Thank you for using our service");
+            } else {
+                System.out.println("Please enter a valid choice");
             }
-            else if (choice == 2) {
-                System.out.println("thank you for using our service");
-            }
-            else {
-                System.out.println("please enter a valid choice");
-            }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    // Method to check if a book is available
     private static boolean checkIfBookIsAvailable(int bookId) {
         boolean isAvailable = false;
 
@@ -182,9 +187,9 @@ public class Reader extends User{
             resultSet.close();
             preparedStatement.close();
             connection.close();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("failed to check if book is available");
+            throw new RuntimeException("Failed to check if book is available");
         }
         return isAvailable;
     }
