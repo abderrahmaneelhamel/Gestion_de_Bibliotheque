@@ -20,11 +20,11 @@ all the books in the library :
 all the borrowed books :
 mobydick | borrow date : 2023-09-04 | return date : 2023-09-05 | reader name : me | status : lost
 
+1984 | borrow date : 2023-09-11 | return date : 2023-09-13 | reader name : me | status : ongoing
+
 haytam life | borrow date : 2023-09-07 | return date : 2023-09-12 | reader name : abdo | status : ongoing
 
-haytam life | borrow date : 2023-09-07 | return date : 2023-09-10 | reader name : abdo | status : ongoing
-
-1984 | borrow date : 2023-09-11 | return date : 2023-09-13 | reader name : me | status : ongoing
+haytam life | borrow date : 2023-09-07 | return date : 2023-09-10 | reader name : abdo | status : lost
 
 ==================================================================================================================
 
@@ -32,7 +32,7 @@ Number of books in the library :
 5
 
 Number of readers : 
-5
+3
 
 Number of books borrowed : 
 4
@@ -44,10 +44,10 @@ Number of books available :
 4
 
 Number of books lost : 
-1
+2
 
 Number of ongoing borrowed books : 
-3
+2
 
 ==================================================================================================================
 

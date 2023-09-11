@@ -5,7 +5,9 @@ import dao.BorrowDAOImpl;
 import dao.DatabaseConnection;
 import dao.UserDAOImpl;
 import model.User;
+import util.tools;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -15,15 +17,20 @@ public class LibraryService {
     private final LibrarianService librarianService;
     private final ReaderService readerService;
 
+    private Connection connection;
+
     public LibraryService() throws SQLException {
         // Initialize services and dependencies here
-        authService = new AuthenticationService(new UserDAOImpl(new  DatabaseConnection().connection()));
-        bookService = new BookService(new BookDAOImpl(new DatabaseConnection().connection()));
-        librarianService = new LibrarianService(new  DatabaseConnection().connection());
-        readerService = new ReaderService(new BookDAOImpl(new DatabaseConnection().connection()), new BorrowDAOImpl(new DatabaseConnection().connection()));
+        Connection connection = new DatabaseConnection().connection();
+        authService = new AuthenticationService(new UserDAOImpl(connection));
+        bookService = new BookService(new BookDAOImpl(connection));
+        librarianService = new LibrarianService(connection);
+        readerService = new ReaderService(new BookDAOImpl(connection), new BorrowDAOImpl(connection));
     }
 
     public void start() {
+        tools.checkOutDatedBorrows();
+
         Scanner scanner = new Scanner(System.in);
 
         // Display a welcome message and options to log in or sign up
