@@ -5,15 +5,13 @@ statistics
 ==================================================================================================================
 
 all the books in the library :
-1 - title : mobydick | author : me | ISBN : #3332 | quantity : 2
+1 - title : mobydick | author : me | ISBN : #3332 | quantity : 1
 
-2 - title : 1984 | author : goerge | ISBN : #3213 | quantity : 2
+2 - title : 1984 | author : goerge | ISBN : #3213 | quantity : 3
 
 5 - title : haytam life | author : haytam | ISBN : #4111 | quantity : 0
 
 7 - title : قطار الحياة | author : ziani hamid | ISBN : #2211 | quantity : 1
-
-9 - title : خواطر | author : ahmed shegiri | ISBN : #6231 | quantity : 2
 
 ==================================================================================================================
 
@@ -24,30 +22,28 @@ haytam life | borrow date : 2023-09-07 | return date : 2023-09-12 | reader name 
 
 haytam life | borrow date : 2023-09-07 | return date : 2023-09-10 | reader name : abdo | status : ongoing
 
-1984 | borrow date : 2023-09-11 | return date : 2023-09-13 | reader name : me | status : ongoing
-
 ==================================================================================================================
 
 Number of books in the library : 
-5
+4
 
 Number of readers : 
-5
+3
 
 Number of books borrowed : 
-4
+3
 
 Number of books returned : 
-7
+6
 
 Number of books available : 
-4
+3
 
 Number of books lost : 
 1
 
 Number of ongoing borrowed books : 
-3
+2
 
 ==================================================================================================================
 
