@@ -61,11 +61,7 @@ public class LibrarianDAOImpl implements LibrarianDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Librarian librarian = new Librarian( new User(0, null, null, null, 0));
-                librarian.setId(resultSet.getInt("id"));
-                librarian.setName(resultSet.getString("name"));
-                librarian.setEmail(resultSet.getString("email"));
-                librarian.setPassword(resultSet.getString("password"));
+                Librarian librarian = new Librarian( new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"), 1));
                 librarians.add(librarian);
             }
         } catch (SQLException e) {

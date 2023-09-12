@@ -37,12 +37,8 @@ public class BookDAOImpl implements BookDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Book book = new Book(null, null, null, 0);
+                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
                 book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setISBN(resultSet.getString("ISBN"));
-                book.setQuantity(resultSet.getInt("quantity"));
                 return book;
             }
         } catch (SQLException e) {
@@ -58,12 +54,8 @@ public class BookDAOImpl implements BookDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Book book = new Book(null, null, null, 0);
+                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
                 book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setISBN(resultSet.getString("ISBN"));
-                book.setQuantity(resultSet.getInt("quantity"));
                 return book;
             }
         } catch (SQLException e) {
@@ -78,12 +70,8 @@ public class BookDAOImpl implements BookDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Book book = new Book(null, null, null, 0);
+                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
                 book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setISBN(resultSet.getString("ISBN"));
-                book.setQuantity(resultSet.getInt("quantity"));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -100,12 +88,8 @@ public class BookDAOImpl implements BookDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Book> books = new ArrayList<>();
             while (resultSet.next()) {
-                Book book = new Book(null, null, null, 0);
+                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
                 book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setISBN(resultSet.getString("ISBN"));
-                book.setQuantity(resultSet.getInt("quantity"));
                 books.add(book);
             }
             return books;
@@ -123,12 +107,8 @@ public class BookDAOImpl implements BookDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Book> books = new ArrayList<>();
             while (resultSet.next()) {
-                Book book = new Book(null, null, null, 0);
+                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
                 book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setISBN(resultSet.getString("ISBN"));
-                book.setQuantity(resultSet.getInt("quantity"));
                 books.add(book);
             }
             return books;
@@ -147,12 +127,8 @@ public class BookDAOImpl implements BookDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Book book = new Book(null,null, null, 0);
+                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
                 book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setISBN(resultSet.getString("ISBN"));
-                book.setQuantity(resultSet.getInt("quantity"));
                 books.add(book);
             }
         } catch (SQLException e) {

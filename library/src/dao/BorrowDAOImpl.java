@@ -41,12 +41,8 @@ public class BorrowDAOImpl implements BorrowDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Borrow borrow = new Borrow(0, 0, null, null, null);
+                Borrow borrow = new Borrow(0, 0, resultSet.getString("borrow_date"), resultSet.getString("return_date"), resultSet.getString("status"));
                 borrow.setId(resultSet.getInt("id"));
-                // You may need to fetch associated book and reader here
-                borrow.setBorrowDate(resultSet.getString("borrow_date"));
-                borrow.setReturnDate(resultSet.getString("return_date"));
-                borrow.setStatus(resultSet.getString("status"));
                 return borrow;
             }
         } catch (SQLException e) {
@@ -64,7 +60,7 @@ public class BorrowDAOImpl implements BorrowDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Borrow borrow = new Borrow(0, 0, null, null, null);;
+                Borrow borrow = new Borrow(0, 0, resultSet.getString("borrow_date"), resultSet.getString("return_date"), resultSet.getString("status"));
                 borrow.setId(resultSet.getInt("id"));
                 // You may need to fetch associated book and reader here
                 borrow.setBorrowDate(resultSet.getString("borrow_date"));

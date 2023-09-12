@@ -67,13 +67,7 @@ public class UserDAOImpl implements UserDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                User user = new User(0, null, null, null, 0);
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(resultSet.getInt("role"));
-                return user;
+                return new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("role"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,12 +82,7 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                User user = new User(0, null, null, null, 0);
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(resultSet.getInt("role"));
+                User user = new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("role"));
                 users.add(user);
             }
         } catch (SQLException e) {

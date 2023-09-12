@@ -9,22 +9,18 @@ all the books in the library :
 
 2 - title : 1984 | author : goerge | ISBN : #3213 | quantity : 2
 
-5 - title : haytam life | author : haytam | ISBN : #4111 | quantity : 0
+3 - title : haytam life | author : haytam | ISBN : #4111 | quantity : 0
 
-7 - title : قطار الحياة | author : ziani hamid | ISBN : #2211 | quantity : 1
+4 - title : قطار الحياة | author : ziani hamid | ISBN : #2211 | quantity : 2
 
-9 - title : خواطر | author : ahmed shegiri | ISBN : #6231 | quantity : 2
+5 - title : خواطر | author : ahmed shegiri | ISBN : #6231 | quantity : 2
 
 ==================================================================================================================
 
 all the borrowed books :
-mobydick | borrow date : 2023-09-04 | return date : 2023-09-05 | reader name : me | status : lost
+1984 | borrow date : 2023-09-11 | return date : 2023-09-13 | reader name : admin2 | status : ongoing
 
-1984 | borrow date : 2023-09-11 | return date : 2023-09-13 | reader name : me | status : ongoing
-
-haytam life | borrow date : 2023-09-07 | return date : 2023-09-12 | reader name : abdo | status : ongoing
-
-haytam life | borrow date : 2023-09-07 | return date : 2023-09-10 | reader name : abdo | status : lost
+mobydick | borrow date : 2023-09-04 | return date : 2023-09-05 | reader name : admin2 | status : lost
 
 ==================================================================================================================
 

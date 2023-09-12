@@ -6,12 +6,12 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     public Connection connection() throws SQLException {
-        //            Connection connection = DriverManager.getConnection(
+//                    Connection connection = DriverManager.getConnection(
 //                    "jdbc:postgresql://localhost:5432/library", "postgres", "admin"
 //            );
         try {
             return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/library", "root", ""
+                    "jdbc:postgresql://localhost:5432/library", "postgres", "admin"
             );
         }catch (SQLException e) {
             e.printStackTrace();

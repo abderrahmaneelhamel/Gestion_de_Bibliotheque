@@ -41,12 +41,7 @@ public class ReaderDAOImpl implements ReaderDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Reader reader = new Reader(new User(0, null, null, null, 0));
-                reader.setId(resultSet.getInt("id"));
-                reader.setName(resultSet.getString("name"));
-                reader.setEmail(resultSet.getString("email"));
-                reader.setPassword(resultSet.getString("password"));
-                return reader;
+                return new Reader(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"), 2));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,11 +56,7 @@ public class ReaderDAOImpl implements ReaderDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Reader reader = new Reader( new User(0, null, null, null, 0));
-                reader.setId(resultSet.getInt("id"));
-                reader.setName(resultSet.getString("name"));
-                reader.setEmail(resultSet.getString("email"));
-                reader.setPassword(resultSet.getString("password"));
+                Reader reader = new Reader(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"), 2));
                 readers.add(reader);
             }
         } catch (SQLException e) {
