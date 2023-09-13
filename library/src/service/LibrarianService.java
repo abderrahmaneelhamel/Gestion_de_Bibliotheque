@@ -54,8 +54,5 @@ public class LibrarianService {
         }
     }
 
-    private void generateLibraryStatistics() {
-
-    }
 }
 
