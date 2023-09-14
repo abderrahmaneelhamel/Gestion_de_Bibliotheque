@@ -13,20 +13,17 @@ public class BorrowDAOImpl implements BorrowDAO {
     }
 
     @Override
-    public boolean borrowBook(Borrow borrow) {
+    public void borrowBook(Borrow borrow) {
         String sql = "INSERT INTO borrow (book_id, reader_id, borrow_date, return_date, status) VALUES (?, ?, '"+borrow.getBorrowDate()+"', '"+borrow.getReturnDate()+"', ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, borrow.getBookId());
             preparedStatement.setInt(2, borrow.getReaderId());
-//            preparedStatement.setString(3, borrow.getBorrowDate());
-//            preparedStatement.setString(3, borrow.getReturnDate());
             preparedStatement.setString(3, borrow.getStatus());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
     }
 

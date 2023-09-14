@@ -46,23 +46,6 @@ public class BookDAOImpl implements BookDAO {
         }
         return null;
     }
-
-    public Book getBookByISBN(String bookISBN) {
-        String sql = "SELECT * FROM books WHERE ISBN = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, bookISBN);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
-                book.setId(resultSet.getInt("id"));
-                return book;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
     @Override
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();

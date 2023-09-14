@@ -12,18 +12,32 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class LibraryService {
+    private static LibraryService instance;
     private final AuthenticationService authService;
     private final LibrarianService librarianService;
     private final ReaderService readerService;
+    private final Connection connection;
 
-    private Connection connection;
-
-    public LibraryService() throws SQLException {
-        // Initialize services and dependencies here
-        Connection connection = new DatabaseConnection().connection();
+    private LibraryService() throws SQLException {
+        connection = DatabaseConnection.getInstance().getConnection();
         authService = new AuthenticationService(new UserDAOImpl(connection));
         librarianService = new LibrarianService(connection);
         readerService = new ReaderService(new BookDAOImpl(connection), new BorrowDAOImpl(connection));
+    }
+
+    public static LibraryService getInstance() throws SQLException {
+        if (instance == null) {
+            instance = new LibraryService();
+        }
+        return instance;
+    }
+    public void closeConnection() {
+        try{
+            this.connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
     }
 
     public void start() {
@@ -86,6 +100,7 @@ public class LibraryService {
 
         // Close resources
         scanner.close();
+        closeConnection();
     }
 
 }

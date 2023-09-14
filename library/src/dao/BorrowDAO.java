@@ -4,8 +4,7 @@ import model.Borrow;
 import java.util.List;
 
 public interface BorrowDAO {
-    boolean borrowBook(Borrow borrow);
-
+    void borrowBook(Borrow borrow);
     List<Borrow> getAllBorrowsByReaderId(int readerId);
-    public void returnBook(Borrow borrow,String currentDate);
+    void returnBook(Borrow borrow,String currentDate);
 }
