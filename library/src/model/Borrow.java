@@ -28,17 +28,8 @@ public class Borrow {
     public int getBookId() {
         return bookId;
     }
-
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
-    }
-
     public int getReaderId() {
         return readerId;
-    }
-
-    public void setReaderId(int readerId) {
-        this.readerId = readerId;
     }
 
     public String getBorrowDate() {

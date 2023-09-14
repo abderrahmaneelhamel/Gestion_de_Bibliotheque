@@ -1,22 +1,14 @@
 package service;
 import dao.BookDAOImpl;
 import dao.BorrowDAOImpl;
-import dao.DatabaseConnection;
 import model.Book;
 import model.Borrow;
 import model.User;
 import util.tools;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class BorrowReturnService {
     private final BorrowDAOImpl borrowDAO;
@@ -31,13 +23,11 @@ public class BorrowReturnService {
 
     public void borrowBook() {
         try {
-            Connection connection = new DatabaseConnection().connection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM books WHERE quantity > 0");
+            List<Book> books = bookDAO.getAllAvailableBooks();
 
             System.out.println("Available Books:");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getInt("id") + "- " + resultSet.getString("title"));
+            for (Book book : books) {
+                System.out.println(book.getId() + "- " + book.getBookTitle());
             }
 
             int bookId;
@@ -73,62 +63,47 @@ public class BorrowReturnService {
             } else {
                 System.out.println("No book is available with this id or it's not in stock.");
             }
-
-            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public void returnBook() {
         try {
-            Connection connection = new DatabaseConnection().connection();
-            Statement statement = connection.createStatement();
+            List<Borrow> borrows = borrowDAO.getAllBorrowsByReaderId(authenticatedReader.getId());
+            if(borrows.size() > 0) {
+                Borrow borrowedBook = null;
 
-            System.out.println("Enter the book ISBN to return:");
-            String ISBN = new Scanner(System.in).nextLine();
+                System.out.println("Enter the book ISBN to return:");
+                String ISBN = new Scanner(System.in).nextLine();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM borrow WHERE reader_id = '" + authenticatedReader.getId() + "' AND status = 'ongoing'");
-            HashMap<String, String> borrowedBook = new HashMap<>();
-
-            while (resultSet.next()) {
-                int bookId = resultSet.getInt("book_id");
-                Book book = bookDAO.getBookById(bookId);
-                if (book.getBookISBN().equals(ISBN)) {
-                    borrowedBook.put("id", resultSet.getString("id"));
-                    borrowedBook.put("book_id", resultSet.getString("book_id"));
-                    borrowedBook.put("borrow_date", resultSet.getString("borrow_date"));
-                    borrowedBook.put("return_date", resultSet.getString("return_date"));
-                    break;
+                for (Borrow borrow : borrows) {
+                    Book book = bookDAO.getBookById(borrow.getBookId());
+                    if (book.getBookISBN().equals(ISBN)) {
+                        borrowedBook = borrow;
+                        break;
+                    }
                 }
-            }
 
-            if (!borrowedBook.isEmpty()) {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                LocalDate today = LocalDate.now();
-                Date currentDate = new Date();
-                String currentDateStr = formatter.format(currentDate);
-                LocalDate returnDate = LocalDate.parse(borrowedBook.get("return_date"));
+                if (borrowedBook != null) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    LocalDate today = LocalDate.now();
+                    Date currentDate = new Date();
+                    String currentDateStr = formatter.format(currentDate);
+                    LocalDate returnDate = LocalDate.parse(borrowedBook.getReturnDate());
 
-                if (today.isAfter(returnDate)) {
-                    statement.executeUpdate("DELETE FROM borrow WHERE id = " + borrowedBook.get("id"));
-                    statement.executeUpdate("INSERT INTO returns (book_id, reader_id, return_date) VALUES ("
-                            + borrowedBook.get("book_id") + ","
-                            + authenticatedReader.getId() + ",'"
-                            + currentDateStr + "')");
-                    System.out.println("You are late to return the book.");
+                    if (today.isAfter(returnDate)) {
+                        System.out.println("You are late to return the book.");
+                    } else {
+                        borrowDAO.returnBook(borrowedBook, currentDateStr);
+                        System.out.println("Thank you for returning the book.");
+                    }
                 } else {
-                    statement.executeUpdate("DELETE FROM borrow WHERE id = " + borrowedBook.get("id"));
-                    statement.executeUpdate("INSERT INTO returns (book_id, reader_id, return_date) VALUES ("
-                            + borrowedBook.get("book_id") + ","
-                            + authenticatedReader.getId() + ",'"
-                            + currentDateStr + "')");
-                    System.out.println("Thank you for returning the book.");
+                    System.out.println("No records found for the provided ISBN or the book is not currently borrowed.");
                 }
             } else {
-                System.out.println("No records found for the provided ISBN or the book is not currently borrowed.");
+                System.out.println("You didn't borrow any book.");
             }
-
-            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

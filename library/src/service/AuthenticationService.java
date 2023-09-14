@@ -72,7 +72,7 @@ public class AuthenticationService {
             return null;
         }
     }
-    public User addAdmin(Scanner scanner) {
+    public void addAdmin(Scanner scanner) {
         System.out.println("=== Admin Registration ===");
 
         // Collect admin information
@@ -101,10 +101,8 @@ public class AuthenticationService {
         // Register the admin user using the userDAO
         if (userDAO.addUser(admin)) {
             System.out.println("Admin registration successful!");
-            return admin;
         } else {
             System.out.println("Admin registration failed. Please check the input.");
-            return null;
         }
     }
 

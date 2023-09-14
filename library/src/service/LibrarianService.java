@@ -1,6 +1,5 @@
 package service;
 import dao.BookDAOImpl;
-import dao.LibrarianDAOImpl;
 import dao.UserDAOImpl;
 import model.User;
 
@@ -9,11 +8,10 @@ import java.util.Scanner;
 
 public class LibrarianService {
     private final BookService bookService;
-    private Connection connection;
+    private final Connection connection;
 
     public LibrarianService(Connection connection) {
         this.connection = connection;
-        LibrarianDAOImpl librarianDAO = new LibrarianDAOImpl(connection);
         this.bookService = new BookService(new BookDAOImpl(connection));
     }
 

@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 public class LibraryService {
     private final AuthenticationService authService;
-    private final BookService bookService;
     private final LibrarianService librarianService;
     private final ReaderService readerService;
 
@@ -23,7 +22,6 @@ public class LibraryService {
         // Initialize services and dependencies here
         Connection connection = new DatabaseConnection().connection();
         authService = new AuthenticationService(new UserDAOImpl(connection));
-        bookService = new BookService(new BookDAOImpl(connection));
         librarianService = new LibrarianService(connection);
         readerService = new ReaderService(new BookDAOImpl(connection), new BorrowDAOImpl(connection));
     }

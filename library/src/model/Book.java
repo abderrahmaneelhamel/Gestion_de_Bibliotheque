@@ -33,10 +33,6 @@ public class Book {
         this.author = author;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }

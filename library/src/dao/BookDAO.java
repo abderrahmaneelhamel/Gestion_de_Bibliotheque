@@ -11,15 +11,19 @@ public interface BookDAO {
     Book getBookById(int bookId);
     List<Book> getAllBooks();
 
-    List<Book> searchBooksByTitle(String title);
-    List<Book> searchBooksByAuthor(String author);
+    List<Book> getAllAvailableBooks();
 
-    List<Book> searchBookByISBNOrTitle(String input);
     // Update
     boolean updateBook(Book book);
 
     // Delete
     boolean deleteBook(int bookId);
+
+    // search
+    List<Book> searchBooksByTitle(String title);
+    List<Book> searchBooksByAuthor(String author);
+
+    List<Book> searchBookByISBNOrTitle(String input);
 
     boolean checkIfBookIsAvailable(int bookId);
 }

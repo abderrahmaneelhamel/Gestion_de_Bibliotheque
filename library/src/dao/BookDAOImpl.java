@@ -81,6 +81,23 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    public List<Book> getAllAvailableBooks() {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE quantity > 0";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Book book = new Book(resultSet.getString("title"),resultSet.getString("author"), resultSet.getString("ISBN"), resultSet.getInt("quantity"));
+                book.setId(resultSet.getInt("id"));
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    @Override
     public List<Book> searchBooksByTitle(String title) {
         String sql = "SELECT * FROM books WHERE title LIKE ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
