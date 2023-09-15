@@ -182,7 +182,6 @@ public class BookDAOImpl implements BookDAO {
         boolean isAvailable = false;
 
         try {
-            Connection connection = new DatabaseConnection().connection();
             String sql = "SELECT quantity from books where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, bookId);
@@ -195,7 +194,6 @@ public class BookDAOImpl implements BookDAO {
 
             resultSet.close();
             preparedStatement.close();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to check if book is available");

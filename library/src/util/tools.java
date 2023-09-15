@@ -59,7 +59,7 @@ public class tools {
 
     public static void checkOutDatedBorrows(){
         try {
-            Connection connection = new DatabaseConnection().connection();
+            Connection connection = DatabaseConnection.getInstance().getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM borrow");
             HashMap<String, String> borrowedBooks = new HashMap<>();

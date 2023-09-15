@@ -11,7 +11,7 @@ public class StatisticsDAO {
 
     public StatisticsDAO() {
         try {
-            this.connection = new DatabaseConnection().connection();
+            this.connection = DatabaseConnection.getInstance().getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
